@@ -17,8 +17,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('users/projects', function () {
+    if (auth()->user()->id === 1)
+        return response()->json(\App\Models\Project::query()->get()->toArray());
+
+    return response()->json(\App\Models\Project::query()->where('user_id', '=', auth()->user()->id)->with(['user'])->get()->toArray());
+});
+
+Route::resource('projects', \App\Http\Controllers\ProjectController::class);
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

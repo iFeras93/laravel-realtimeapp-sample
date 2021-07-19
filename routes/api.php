@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('users', \App\Http\Controllers\UsersListApiController::class);
+Route::get('users/projects', function () {
+    if (auth()->user()->id === 1)
+        return response()->json(\App\Models\Project::query()->get()->toArray());
+
+    return response()->json(\App\Models\Project::query()->where('user_id', '=', auth()->user()->id)->with(['user'])->get()->toArray());
+});
