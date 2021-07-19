@@ -15,6 +15,9 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->enum('status', ['pending', 'in_progress', 'canceled','finished'])->default('pending');
             $table->timestamps();
         });
     }
