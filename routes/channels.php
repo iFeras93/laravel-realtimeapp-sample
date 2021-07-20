@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+    return (int)$user->id === (int)$id;
+});
+
+Broadcast::channel('project.{id}', function ($user, $id) {
+    return (int)$user->id === (int)\App\Models\Project::query()->findOrNew($id)->user_id || (int)$user->id === 1;
 });

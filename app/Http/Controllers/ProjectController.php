@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ProjectStatusUpdated;
 use App\Http\Requests\StoreProject;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -52,9 +53,13 @@ class ProjectController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreProject $request, $id)
+    public function update(StoreProject $request, Project $project)
     {
-        Project::query()->update($request->only('name', 'user_id', 'status'));
+        $p = Project::query()
+            ->where('id', '=', $project->id)
+            ->first();
+        $p->update($request->only('name', 'user_id', 'status'));
+        ProjectStatusUpdated::dispatch($project, auth()->user());
         return redirect('/dashboard')->with(['status' => 'Project has been updated successfully']);
     }
 

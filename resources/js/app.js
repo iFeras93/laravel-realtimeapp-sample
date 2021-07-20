@@ -11,6 +11,7 @@ import 'vue-select/dist/vue-select.css';
 Vue.component('welcome', require('./components/Welcome.vue').default);
 Vue.component('list-component', require('./components/list').default);
 Vue.component('users-list', require('./components/users-list').default);
+Vue.component('list-item', require('./components/List-Item').default);
 
 const app = new Vue({
     el: '#app'
